@@ -3,6 +3,7 @@
 #include <SPI.h>
 #include "Ucglib.h"
 #include "BeatDetector.h"
+#include "DataRecorder.h"
 
 int samplingFreq = 250;
 int horizontalScale = 2;
@@ -13,6 +14,8 @@ Biquad * bs2 = new Biquad(bq_type_notch, 50.0 / samplingFreq, 1.3065630, 0);
 Biquad * hpFilter = new Biquad(bq_type_highpass, 0.3 / samplingFreq, 0.707, 0);
 
 BeatDetector * beatDetector = new BeatDetector(samplingFreq);
+
+DataRecorder * dataRecorder = new DataRecorder();
 
 int correction_count = 0;
 int correction_start;
@@ -72,6 +75,13 @@ void readADC(void)
 
 void setup()
 {
+	Serial.begin(9600);
+
+	pinMode(PC14, INPUT);
+	pinMode(PC15, INPUT);
+
+	dataRecorder->begin(PA4);
+
 	ucg.begin(UCG_FONT_MODE_SOLID);
 	ucg.setRotate90();
 	ucg.clearScreen();
@@ -97,6 +107,12 @@ void setup()
 
 void loop()
 {
+	if((digitalRead(PC14) == 1)||(digitalRead(PC15) == 1))
+	{
+	    dataRecorder->close();
+	    hasData = false;
+	}
+
 	if (hasData)
 	{
 		hasData = false;
@@ -108,6 +124,14 @@ void loop()
 		ucg.setClipRange(0, STATUS_LINE_HEIGHT, width, height-STATUS_LINE_HEIGHT);
 		ucg.setColor(0,0,0);
 		ucg.drawVLine(posX, 0, height);
+
+		ucg.setColor(63,63,63);
+		ucg.drawPixel(posX, STATUS_LINE_HEIGHT+(height-STATUS_LINE_HEIGHT)/4);
+		ucg.setColor(127,127,127);
+		ucg.drawPixel(posX, STATUS_LINE_HEIGHT+(height-STATUS_LINE_HEIGHT)/2);
+		ucg.setColor(63,63,63);
+		ucg.drawPixel(posX, STATUS_LINE_HEIGHT+(height-STATUS_LINE_HEIGHT)*3/4);
+
 		ucg.setColor(0,255,0);
 		ucg.drawLine(posX-1, prevY, posX, posY);
 
@@ -149,7 +173,11 @@ void loop()
 			correction_start = correction_end;
 			correction_count = 0;
 
-			sprintf(buf, "%d s/s %d bpm Y:%d V:%d B:%.2f ",round(quant_Fq), beatDetector->getBps(), posY, rawValue, beatDetector->getBaseline());
+			sprintf(buf, "%d s/s %d bpm %s Y:%d V:%d B:%.2f ",
+					(int)round(quant_Fq),
+					beatDetector->getBps(),
+					(dataRecorder->hasSD() ? "SD" : "--"),
+					posY, rawValue, beatDetector->getBaseline());
 			ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
 			ucg.setColor(255, 255, 255);
 			ucg.setPrintPos(0,20);
@@ -157,7 +185,9 @@ void loop()
 		  }
 		}
 
-    	beatDetector->push(rawValue);
+    	beatDetector->push(notchFilteredValue);
+    	dataRecorder->push("");
+
 	}
 }
 
