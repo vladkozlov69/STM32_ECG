@@ -9,7 +9,7 @@
 
 BeatDetector::BeatDetector(const int samplingFreq)
 {
-	baselineFilter = new Biquad(bq_type_lowpass, 0.3 / samplingFreq, 0.707, 0);
+	baselineFilter = new Biquad(bq_type_lowpass, 0.1 / samplingFreq, 0.707, 0);
 }
 
 
@@ -17,7 +17,8 @@ void BeatDetector::push(const double value)
 {
 	baselineValue = baselineFilter->process(value);
 
-	double threshold = baselineValue * 1.7;
+	//double threshold = 3500;
+	double threshold = baselineValue * 1.5;
 
 	// BPM calculation check
 	if (value > threshold && belowThreshold == true)
@@ -54,7 +55,7 @@ void BeatDetector::calculateBPM ()
 
 void BeatDetector::updateSamplingFrequency(const int frequency)
 {
-	baselineFilter->setFc(0.3 / frequency);
+	baselineFilter->setFc(0.1 / frequency);
 }
 
 int BeatDetector::getBps()
