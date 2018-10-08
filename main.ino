@@ -45,7 +45,13 @@ MISO  <-->PB14
 MOSI  <-->PB15
 */
 
-Ucglib_ILI9341_18x240x320_HWSPI ucg(PB6, PB8, PB7);
+
+#define SPI_DC  PA11
+#define SPI_RST PA12
+#define SPI_CS  PB5
+
+
+Ucglib_ILI9341_18x240x320_HWSPI ucg(SPI_DC, SPI_CS, SPI_RST);
 
 HardwareTimer timer(2);
 
