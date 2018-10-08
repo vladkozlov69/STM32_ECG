@@ -9,7 +9,7 @@
 
 DataRecorder::DataRecorder()
 {
-	// TODO Auto-generated constructor stub
+
 }
 
 bool DataRecorder::begin(int csPin)
@@ -26,11 +26,30 @@ bool DataRecorder::hasSD()
 
 void DataRecorder::push(const char * data)
 {
+	if (sdReady)
+	{
+		if (!sdOpenedWriting)
+		{
+			recordingFile = SD.open(getNewFileName(), FILE_WRITE);
+		}
 
+		recordingFile.print(data);
+	}
+}
+
+char * DataRecorder::getNewFileName()
+{
+	sprintf(buf, "%d.txt", (int)millis());
+
+	return buf;
 }
 
 void DataRecorder::close()
 {
-
+	if (sdReady && sdOpenedWriting)
+	{
+		recordingFile.close();
+		sdOpenedWriting = false;
+	}
 }
 

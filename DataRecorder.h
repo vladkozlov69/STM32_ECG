@@ -12,6 +12,7 @@
 
 class DataRecorder
 {
+	char buf[25];
 public:
 	DataRecorder();
 	bool begin(int csPin);
@@ -20,8 +21,9 @@ public:
 	void close();
 private:
 	bool sdReady = false;
-	bool sdOpened = false;
+	bool sdOpenedWriting = false;
 	File recordingFile;
+	char * getNewFileName();
 };
 
 #endif /* DATARECORDER_H_ */

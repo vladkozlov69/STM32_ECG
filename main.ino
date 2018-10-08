@@ -62,6 +62,11 @@ volatile int rawValue = 0;
 volatile double notchFilteredValue;
 volatile double filteredValue;
 
+#define ECG_LO1 PB10
+#define ECG_LO2 PB11
+
+bool hasSD = false;
+
 void readADC(void)
 {
 	rawValue = analogRead(PA1);
@@ -75,10 +80,12 @@ void readADC(void)
 
 void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(115200);
 
-	pinMode(PC14, INPUT);
-	pinMode(PC15, INPUT);
+	pinMode(ECG_LO1, INPUT);
+	pinMode(ECG_LO2, INPUT);
+
+	pinMode(PC13, OUTPUT);
 
 	dataRecorder->begin(PA4);
 
@@ -107,14 +114,27 @@ void setup()
 
 void loop()
 {
-	if((digitalRead(PC14) == 1)||(digitalRead(PC15) == 1))
+	if((digitalRead(ECG_LO1) == 1) || (digitalRead(ECG_LO1) == 1))
 	{
 	    dataRecorder->close();
-	    hasData = false;
+	    digitalWrite(PC13, HIGH);
+
+	    ucg.setColor(0, 0, 127);
+	    ucg.drawBox(0, 0, width, STATUS_LINE_HEIGHT);
+		ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
+		ucg.setColor(255, 255, 255);
+		ucg.setPrintPos(0,20);
+		ucg.print("NO SIGNAL");
+
+		return;
 	}
 
 	if (hasData)
 	{
+	    digitalWrite(PC13, LOW);
+
+		Serial.println(rawValue);
+
 		hasData = false;
 
 		posY = height/2 - round(((filteredValue)/4095)*(height-STATUS_LINE_HEIGHT));
