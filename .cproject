@@ -19,52 +19,43 @@
 							<builder buildPath="${workspace_loc:/test2}/Release" id="io.sloeber.sketch.builder.1940821782" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder" superClass="io.sloeber.sketch.builder"/>
 							<tool id="io.sloeber.tool.sketch.compiler.cpp.1710044201" name="Arduino C++ Compiler" superClass="io.sloeber.tool.sketch.compiler.cpp">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.cpp.sketch.option.incpath.1465428562" name="Include Paths (-I)" superClass="io.sloeber.compiler.cpp.sketch.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/core/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/Biquad}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/Ucglib/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Biquad}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/SPI/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Ucglib/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RingBuffer/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RTClib}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.cpp.sketch.input.1482748470" name="CPP source files" superClass="io.sloeber.compiler.cpp.sketch.input"/>
 							</tool>
 							<tool id="io.sloeber.tool.compiler.c.1658589673" name="Arduino C Compiler" superClass="io.sloeber.tool.compiler.c">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.c.sketch.option.incpath.1502180853" name="Include Paths (-I)" superClass="io.sloeber.compiler.c.sketch.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/core/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/Biquad}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/Ucglib/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Biquad}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/SPI/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Ucglib/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RingBuffer/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RTClib}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.c.sketch.input.1874039889" name="C Source Files" superClass="io.sloeber.compiler.c.sketch.input"/>
 							</tool>
 							<tool id="io.sloeber.tool.sketch.compiler.s.1213087729" name="Arduino Assembler" superClass="io.sloeber.tool.sketch.compiler.s">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="io.sloeber.compiler.asm.sketch.option.incpath.1082223794" name="Include Paths (-I)" superClass="io.sloeber.compiler.asm.sketch.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/core/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/Biquad}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/test2/libraries/Ucglib/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Biquad}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/SPI/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Ucglib/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RingBuffer/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RTClib}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.S.sketch.input.191287651" name="Assembly source files" superClass="io.sloeber.compiler.S.sketch.input"/>
 							</tool>

@@ -4,6 +4,9 @@
 #include "Ucglib.h"
 #include "BeatDetector.h"
 #include "DataRecorder.h"
+#include "RTCLib.h"
+
+
 
 int samplingFreq = 250;
 int horizontalScale = 2;
@@ -16,6 +19,8 @@ Biquad * hpFilter = new Biquad(bq_type_highpass, 0.3 / samplingFreq, 0.707, 0);
 BeatDetector * beatDetector = new BeatDetector(samplingFreq);
 
 DataRecorder * dataRecorder = new DataRecorder();
+
+RTC_DS1307 rtc;
 
 int correction_count = 0;
 int correction_start;
@@ -93,6 +98,10 @@ void setup()
 
 	pinMode(PC13, OUTPUT);
 
+	rtc.begin();
+
+	//rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+
 	dataRecorder->begin(PA4);
 
 	ucg.begin(UCG_FONT_MODE_SOLID);
@@ -110,7 +119,7 @@ void setup()
 	correction_start = tick250 = tick500 = millis();
 
 	timer.pause();
-	timer.setPeriod(1000 * 1000 / samplingFreq);
+	timer.setPeriod(1000000 / samplingFreq);
 	timer.setCompare(TIMER_CH1, 1);
 	timer.attachCompare1Interrupt(readADC);
 	timer.refresh();
@@ -122,6 +131,8 @@ void loop()
 {
 	if((digitalRead(ECG_LO1) == 1) || (digitalRead(ECG_LO1) == 1))
 	{
+		//DateTime now = rtc.now();
+
 	    dataRecorder->close();
 	    digitalWrite(PC13, HIGH);
 
@@ -130,7 +141,21 @@ void loop()
 		ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
 		ucg.setColor(255, 255, 255);
 		ucg.setPrintPos(0,20);
-		ucg.print("NO SIGNAL");
+
+		DateTime now = rtc.now();
+
+		sprintf(buf, "NO SIGNAL %02d-%02d-%04d %02d:%02d:%02d",
+				now.day(),
+				now.month(),
+				now.year(),
+				now.hour(),
+				now.minute(),
+				now.second());
+
+		ucg.print(buf);
+
+		//ucg.print("NO SIGNAL");
+
 
 		return;
 	}
