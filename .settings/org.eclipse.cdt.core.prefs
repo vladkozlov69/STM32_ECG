@@ -580,7 +580,7 @@ environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.CP
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.CPP.COMPILE/value=
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.LINK/delimiter=\:
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.LINK/operation=replace
-environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.LINK/value=
+environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.LINK/value=-specs\=nano.specs
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.MENU/delimiter=\:
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.MENU/operation=replace
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.MENU/value=bootloader_version\=original\ncpu\=atmega328old\ncpu_speed\=speed_72mhz\ndevice_variant\=STM32F103C8\nopt\=osstd\nupload_method\=serialMethod
