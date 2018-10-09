@@ -95,6 +95,109 @@ void readADC(void)
 	hasData = true;
 }
 
+
+//================ MENU DEFINITION ==================
+#define ENC_A PB12
+#define ENC_B PB13
+#define ENC_BTN PB14
+
+ClickEncoder encoder(ENC_A, ENC_B, ENC_BTN, 2);
+ClickEncoderStream encStream(encoder,1);
+
+HardwareTimer timerEnc(4);
+
+void timerEncIsr()
+{
+  encoder.service();
+}
+
+int autoRecord=0;
+int hZoom = 2;
+int m_Year;
+int m_Month;
+int m_Day;
+int m_Hour;
+int m_Minute;
+
+result doSave()
+{
+	return proceed;
+}
+
+result doUpdateRtc()
+{
+	rtc.adjust(DateTime(m_Year, m_Month, m_Day, m_Hour, m_Minute, 0));
+
+	return proceed;
+}
+
+TOGGLE(autoRecord,setAutoRecord,"Auto record: ",doNothing,noEvent,noStyle
+  ,VALUE("On",1,doNothing,noEvent)
+  ,VALUE("Off",0,doNothing,noEvent)
+);
+
+TOGGLE(hZoom,setHZoom,"hZoom: ",doNothing,noEvent,noStyle
+  ,VALUE("1",1,doNothing,noEvent)
+  ,VALUE("2",2,doNothing,noEvent)
+);
+
+altMENU(menu,time,"Time",doUpdateRtc,exitEvent,noStyle,(systemStyles)(_asPad|Menu::_menuData|Menu::_canNav|_parentDraw)
+		,FIELD(m_Day,"","-",1,31,1,0,doNothing,noEvent,noStyle)
+		,FIELD(m_Month,"","-",1,12,1,0,doNothing,noEvent,noStyle)
+		,FIELD(m_Year,""," ",2010,2025,1,0,doNothing,noEvent,noStyle)
+		,FIELD(m_Hour,"",":",0,11,1,0,doNothing,noEvent,noStyle)
+		,FIELD(m_Minute,"","",0,59,1,0,doNothing,noEvent,wrapStyle)
+);
+
+MENU(mainMenu, "SETTINGS", Menu::doNothing, Menu::noEvent, Menu::wrapStyle
+  ,SUBMENU(setAutoRecord)
+  ,SUBMENU(setHZoom)
+  ,SUBMENU(time)
+  ,OP(" SAVE SETTINGS",doSave,enterEvent)
+  ,EXIT(" EXIT")
+);
+
+MENU_INPUTS(inp,&encStream);
+
+#define UC_Width 320
+#define UC_Height 240
+
+
+//font size plus margins
+#define fontX 18
+#define fontY 18
+
+#define MAX_DEPTH 2
+
+//define colors
+#define BLACK {0,0,0}
+#define BLUE {0,0,255}
+#define GRAY {128,128,128}
+#define WHITE {255,255,255}
+#define YELLOW {255,255,0}
+#define RED {255,0,0}
+#define GREEN {0,255,0}
+
+const colorDef<rgb> colors[] MEMMODE={
+  {{BLACK,BLACK},{BLACK,BLUE,BLUE}},//bgColor
+  {{GRAY,GRAY},{WHITE,WHITE,WHITE}},//fgColor
+  {{WHITE,BLACK},{YELLOW,YELLOW,RED}},//valColor
+  {{WHITE,BLACK},{WHITE,YELLOW,YELLOW}},//unitColor
+  {{WHITE,GRAY},{BLACK,BLUE,WHITE}},//cursorColor
+  {{WHITE,YELLOW},{GREEN,WHITE,WHITE}},//titleColor
+};
+
+#define offsetX 0
+#define offsetY 0
+
+MENU_OUTPUTS(out,MAX_DEPTH
+  ,UCG_OUT(ucg,colors,fontX,fontY,offsetX,offsetY,{0,0,UC_Width/fontX,UC_Height/fontY})
+  ,NONE
+);
+
+NAVROOT(nav,mainMenu,MAX_DEPTH,inp,out);
+//===================================================
+
 void setup()
 {
 	Serial.begin(115200);
@@ -102,11 +205,16 @@ void setup()
 	pinMode(ECG_LO1, INPUT);
 	pinMode(ECG_LO2, INPUT);
 
+	pinMode(ENC_BTN, INPUT_PULLUP);
+
 	pinMode(PC13, OUTPUT);
 
 	rtc.begin();
 
-	//rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+	if (!rtc.isrunning())
+	{
+		rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+	}
 
 	dataRecorder->begin(PA4);
 
@@ -130,25 +238,63 @@ void setup()
 	timer.attachCompare1Interrupt(readADC);
 	timer.refresh();
 	timer.resume();
+
+	timerEnc.pause();
+	timerEnc.setPeriod(1000);
+	timerEnc.setCompare(TIMER_CH1, 1);
+	timerEnc.attachCompare1Interrupt(timerEncIsr);
+	timerEnc.refresh();
+	timerEnc.resume();
+
+	nav.idleOn();
+}
+
+void displayStatus(const char * status, bool clear)
+{
+	if (clear)
+	{
+	    ucg.setColor(0, 0, 127);
+	    ucg.drawBox(0, 0, width, STATUS_LINE_HEIGHT);
+	}
+
+    ucg.setFontMode(UCG_FONT_MODE_SOLID);
+	ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
+	ucg.setColor(255, 255, 255);
+	ucg.setPrintPos(0,20);
+	ucg.setFont(ucg_font_ncenR12_hr);
+
+	ucg.print(buf);
+
+	ucg.setClipRange(0, 0, width, height);
+	ucg.setFontMode(UCG_FONT_MODE_TRANSPARENT);
+	ucg.setFont(ucg_font_ncenR12_tr);
 }
 
 
 void loop()
 {
+	DateTime now = rtc.now();
+
+	if (nav.sleepTask)
+	{
+		m_Day = now.day();
+		m_Month = now.month();
+		m_Year = now.year();
+		m_Hour = now.hour();
+		m_Minute = now.minute();
+	}
+
+	nav.poll();
+
+	if (!nav.sleepTask)
+	{
+		return;
+	}
+
 	if((digitalRead(ECG_LO1) == 1) || (digitalRead(ECG_LO1) == 1))
 	{
-		//DateTime now = rtc.now();
-
 	    dataRecorder->close();
 	    digitalWrite(PC13, HIGH);
-
-	    ucg.setColor(0, 0, 127);
-	    ucg.drawBox(0, 0, width, STATUS_LINE_HEIGHT);
-		ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
-		ucg.setColor(255, 255, 255);
-		ucg.setPrintPos(0,20);
-
-		DateTime now = rtc.now();
 
 		sprintf(buf, "NO SIGNAL %02d-%02d-%04d %02d:%02d:%02d",
 				now.day(),
@@ -158,10 +304,7 @@ void loop()
 				now.minute(),
 				now.second());
 
-		ucg.print(buf);
-
-		//ucg.print("NO SIGNAL");
-
+		displayStatus(buf, true);
 
 		return;
 	}
@@ -210,6 +353,8 @@ void loop()
 			ucg.drawVLine(posX, 0, height);
 		}
 
+		ucg.setClipRange(0, 0, width, height);
+
 		scaleX--;
 
 		if (scaleX == 0)
@@ -235,15 +380,13 @@ void loop()
 					beatDetector->getBps(),
 					(dataRecorder->hasSD() ? "SD" : "--"),
 					posY, rawValue, beatDetector->getBaseline());
-			ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
-			ucg.setColor(255, 255, 255);
-			ucg.setPrintPos(0,20);
-			ucg.print(buf);
+
+			displayStatus(buf, false);
 		  }
 		}
 
     	beatDetector->push(notchFilteredValue);
-    	dataRecorder->push("");
+    	//dataRecorder->push("");
 
 	}
 }
