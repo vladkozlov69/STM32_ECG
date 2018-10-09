@@ -42,9 +42,24 @@
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/stm32duino/hardware/STM32F1/2018.9.24/variants/generic_stm32f103c</locationURI>
 		</link>
 		<link>
+			<name>libraries/ArduinoMenu_library</name>
+			<type>2</type>
+			<location>/Users/vkozlov/Documents/Arduino/libraries/ArduinoMenu_library</location>
+		</link>
+		<link>
 			<name>libraries/Biquad</name>
 			<type>2</type>
 			<location>/Users/vkozlov/Documents/Arduino/libraries/Biquad</location>
+		</link>
+		<link>
+			<name>libraries/ClickEncoder-STM32</name>
+			<type>2</type>
+			<location>/Users/vkozlov/Documents/Arduino/libraries/ClickEncoder-STM32</location>
+		</link>
+		<link>
+			<name>libraries/EEPROM</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/stm32duino/hardware/STM32F1/2018.9.24/libraries/EEPROM</locationURI>
 		</link>
 		<link>
 			<name>libraries/RTClib</name>

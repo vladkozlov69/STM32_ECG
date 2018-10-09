@@ -6,6 +6,12 @@
 #include "DataRecorder.h"
 #include "RTCLib.h"
 
+#include <menu.h>
+#include <menuIO/clickEncoderIn.h>
+#include <menuIO/serialIn.h>
+#include <menuIO/chainStream.h>
+#include <menuIO/UCGLibOut.h>
+
 
 
 int samplingFreq = 250;

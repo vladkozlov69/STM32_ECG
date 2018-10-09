@@ -28,6 +28,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RTClib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/ArduinoMenu_library/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/ClickEncoder-STM32}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/EEPROM}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.cpp.sketch.input.1482748470" name="CPP source files" superClass="io.sloeber.compiler.cpp.sketch.input"/>
 							</tool>
@@ -42,6 +45,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RTClib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/ArduinoMenu_library/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/ClickEncoder-STM32}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/EEPROM}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.c.sketch.input.1874039889" name="C Source Files" superClass="io.sloeber.compiler.c.sketch.input"/>
 							</tool>
@@ -56,6 +62,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/Wire}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/RTClib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/ArduinoMenu_library/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/ClickEncoder-STM32}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/STM32_ECG/libraries/EEPROM}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.S.sketch.input.191287651" name="Assembly source files" superClass="io.sloeber.compiler.S.sketch.input"/>
 							</tool>
