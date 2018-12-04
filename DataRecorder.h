@@ -9,15 +9,20 @@
 #define DATARECORDER_H_
 
 #include "SD.h"
+#include "RTClib.h"
 
 class DataRecorder
 {
+	double * m_Data;
+	int m_SamplingFreq;
+	int m_SamplePointer = 0;
+	RTC_DS3231 * m_Rtc;
 	char buf[25];
 public:
-	DataRecorder();
+	DataRecorder(int samplingFreq, RTC_DS3231 * rtc);
 	bool begin(int csPin);
 	bool hasSD();
-	void push(const char * data);
+	void push(double value);
 	void close();
 private:
 	bool sdReady = false;

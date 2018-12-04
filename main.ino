@@ -5,6 +5,7 @@
 #include "BeatDetector.h"
 #include "DataRecorder.h"
 #include "RTCLib.h"
+#include "ClickEncoder.h"
 
 #include <menu.h>
 #include <menuIO/clickEncoderIn.h>
@@ -24,9 +25,11 @@ Biquad * hpFilter = new Biquad(bq_type_highpass, 0.3 / samplingFreq, 0.707, 0);
 
 BeatDetector * beatDetector = new BeatDetector(samplingFreq);
 
-DataRecorder * dataRecorder = new DataRecorder();
+RTC_DS3231 rtc;
 
-RTC_DS1307 rtc;
+DataRecorder * dataRecorder = new DataRecorder(samplingFreq, &rtc);
+
+
 
 int correction_count = 0;
 int correction_start;
@@ -56,10 +59,14 @@ MISO  <-->PB14
 MOSI  <-->PB15
 */
 
-
+// display
 #define SPI_DC  PA11
 #define SPI_RST PA12
 #define SPI_CS  PB5
+
+// sd
+#define SD_CS PA4
+
 
 
 Ucglib_ILI9341_18x240x320_HWSPI ucg(SPI_DC, SPI_CS, SPI_RST);
@@ -211,12 +218,12 @@ void setup()
 
 	rtc.begin();
 
-	if (!rtc.isrunning())
+	if (rtc.lostPower())
 	{
 		rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
 	}
 
-	dataRecorder->begin(PA4);
+	dataRecorder->begin(SD_CS);
 
 	ucg.begin(UCG_FONT_MODE_SOLID);
 	ucg.setRotate90();
@@ -263,7 +270,7 @@ void displayStatus(const char * status, bool clear)
 	ucg.setPrintPos(0,20);
 	ucg.setFont(ucg_font_ncenR12_hr);
 
-	ucg.print(buf);
+	ucg.print(status);
 
 	ucg.setClipRange(0, 0, width, height);
 	ucg.setFontMode(UCG_FONT_MODE_TRANSPARENT);
@@ -386,9 +393,9 @@ void loop()
 		}
 
     	beatDetector->push(notchFilteredValue);
-    	//dataRecorder->push("");
-
+    	dataRecorder->push(filteredValue);
 	}
 }
+
 
 

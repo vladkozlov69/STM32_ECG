@@ -52,24 +52,14 @@
 			<location>/Users/vkozlov/Documents/Arduino/libraries/Biquad</location>
 		</link>
 		<link>
-			<name>libraries/ClickEncoder-STM32</name>
-			<type>2</type>
-			<location>/Users/vkozlov/Documents/Arduino/libraries/ClickEncoder-STM32</location>
-		</link>
-		<link>
-			<name>libraries/EEPROM</name>
-			<type>2</type>
-			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/stm32duino/hardware/STM32F1/2018.9.24/libraries/EEPROM</locationURI>
-		</link>
-		<link>
 			<name>libraries/RTClib</name>
 			<type>2</type>
-			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/RTClib/1.2.0</locationURI>
+			<location>/Users/vkozlov/Documents/Arduino/libraries/RTClib</location>
 		</link>
 		<link>
 			<name>libraries/SD</name>
 			<type>2</type>
-			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/SD/1.2.2</locationURI>
+			<location>/Users/vkozlov/Documents/Arduino/libraries/SD</location>
 		</link>
 		<link>
 			<name>libraries/SPI</name>
@@ -85,6 +75,11 @@
 			<name>libraries/Wire</name>
 			<type>2</type>
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/stm32duino/hardware/STM32F1/2018.9.24/libraries/Wire</locationURI>
+		</link>
+		<link>
+			<name>libraries/encoder</name>
+			<type>2</type>
+			<location>/Users/vkozlov/Documents/Arduino/libraries/encoder</location>
 		</link>
 	</linkedResources>
 </projectDescription>
