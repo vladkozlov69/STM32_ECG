@@ -18,6 +18,11 @@ bool DataRecorder::begin(int csPin)
 {
 	sdReady = SD.begin(csPin);
 
+	if (sdReady)
+	{
+		SD.mkdir("/ECG");
+	}
+
 	return sdReady;
 }
 
@@ -57,6 +62,7 @@ void DataRecorder::push(double value)
 			{
 				recordingFile.print(",");
 				recordingFile.print(m_Data[i], 3);
+				m_Data[i] = 0;
 			}
 
 			recordingFile.println();
@@ -67,7 +73,8 @@ void DataRecorder::push(double value)
 char * DataRecorder::getNewFileName()
 {
 	DateTime now = m_Rtc->now();
-	sprintf(buf, "%04d%02d%02d.csv", now.year(), now.month(), now.day());
+	// todo maybe make hierarchy e.g. /ECG/{DATE}/{TIME}.csv
+	sprintf(buf, "/ECG/%04d%02d%02d.csv", now.year(), now.month(), now.day());
 	return buf;
 }
 
