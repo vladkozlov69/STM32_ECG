@@ -32,8 +32,8 @@ DataRecorder * dataRecorder = new DataRecorder(samplingFreq, &rtc);
 
 
 int correction_count = 0;
-int correction_start;
-int correction_end;
+unsigned long correction_start;
+unsigned long correction_end;
 int tick250;
 int tick500;
 int tickCur;
@@ -86,6 +86,9 @@ volatile int rawValue = 0;
 volatile double notchFilteredValue;
 volatile double filteredValue;
 
+unsigned long lastConnect;
+unsigned int disconnectTimeout = 10;
+
 #define ECG_LO1 PB10
 #define ECG_LO2 PB11
 
@@ -118,7 +121,7 @@ void timerEncIsr()
   encoder.service();
 }
 
-int autoRecord=0;
+int autoRecord=1;
 int hZoom = 2;
 int m_Year;
 int m_Month;
@@ -159,6 +162,7 @@ altMENU(menu,time,"Time",doUpdateRtc,exitEvent,noStyle,(systemStyles)(_asPad|Men
 MENU(mainMenu, "SETTINGS", Menu::doNothing, Menu::noEvent, Menu::wrapStyle
   ,SUBMENU(setAutoRecord)
   ,SUBMENU(setHZoom)
+  ,FIELD(disconnectTimeout,"Timeout","",5,60,1,1,doNothing,noEvent,noStyle)
   ,SUBMENU(time)
   ,OP(" SAVE SETTINGS",doSave,enterEvent)
   ,EXIT(" EXIT")
@@ -205,6 +209,17 @@ MENU_OUTPUTS(out,MAX_DEPTH
 NAVROOT(nav,mainMenu,MAX_DEPTH,inp,out);
 //===================================================
 
+
+void setClipGraph()
+{
+	ucg.setClipRange(0, STATUS_LINE_HEIGHT, width, height-STATUS_LINE_HEIGHT);
+}
+
+void setClipStatus()
+{
+	ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
+}
+
 void setup()
 {
 	Serial.begin(115200);
@@ -235,9 +250,14 @@ void setup()
 	ucg.setColor(1, 0, 0, 127);
 	ucg.setColor(0, 0, 127);
 	ucg.drawBox(0, 0, width, STATUS_LINE_HEIGHT);
+	ucg.setFontMode(UCG_FONT_MODE_SOLID);
 	ucg.setFont(ucg_font_ncenR12_hr);
 
+	setClipGraph();
+
 	correction_start = tick250 = tick500 = millis();
+
+	lastConnect = millis();
 
 	timer.pause();
 	timer.setPeriod(1000000 / samplingFreq);
@@ -256,25 +276,13 @@ void setup()
 	nav.idleOn();
 }
 
-void displayStatus(const char * status, bool clear)
+void displayStatus(const char * status)
 {
-	if (clear)
-	{
-	    ucg.setColor(0, 0, 127);
-	    ucg.drawBox(0, 0, width, STATUS_LINE_HEIGHT);
-	}
+	setClipStatus();
 
-    ucg.setFontMode(UCG_FONT_MODE_SOLID);
-	ucg.setClipRange(0, 0, width, STATUS_LINE_HEIGHT);
 	ucg.setColor(255, 255, 255);
 	ucg.setPrintPos(0,20);
-	ucg.setFont(ucg_font_ncenR12_hr);
-
 	ucg.print(status);
-
-	ucg.setClipRange(0, 0, width, height);
-	ucg.setFontMode(UCG_FONT_MODE_TRANSPARENT);
-	ucg.setFont(ucg_font_ncenR12_tr);
 }
 
 
@@ -300,10 +308,15 @@ void loop()
 
 	if((digitalRead(ECG_LO1) == 1) || (digitalRead(ECG_LO1) == 1))
 	{
-	    dataRecorder->close();
+		if ((millis() - lastConnect) > 1000 * disconnectTimeout)
+		{
+			dataRecorder->close();
+		}
+
 	    digitalWrite(PC13, HIGH);
 
-		sprintf(buf, "NO SIGNAL %02d-%02d-%04d %02d:%02d:%02d",
+		sprintf(buf, "NO SIGNAL %s %02d-%02d-%04d %02d:%02d:%02d",
+				(dataRecorder->isActive() ? "[W]" : ""),
 				now.day(),
 				now.month(),
 				now.year(),
@@ -311,16 +324,16 @@ void loop()
 				now.minute(),
 				now.second());
 
-		displayStatus(buf, true);
+		displayStatus(buf);
 
 		return;
 	}
 
+	lastConnect = millis();
+
 	if (hasData)
 	{
 	    digitalWrite(PC13, LOW);
-
-		Serial.println(rawValue);
 
 		hasData = false;
 
@@ -328,9 +341,7 @@ void loop()
 
 		tickCur = millis();
 
-		ucg.setClipRange(0, STATUS_LINE_HEIGHT, width, height-STATUS_LINE_HEIGHT);
-		ucg.setColor(0,0,0);
-		ucg.drawVLine(posX, 0, height);
+		setClipGraph();
 
 		ucg.setColor(63,63,63);
 		ucg.drawPixel(posX, STATUS_LINE_HEIGHT+(height-STATUS_LINE_HEIGHT)/4);
@@ -360,8 +371,6 @@ void loop()
 			ucg.drawVLine(posX, 0, height);
 		}
 
-		ucg.setClipRange(0, 0, width, height);
-
 		scaleX--;
 
 		if (scaleX == 0)
@@ -369,6 +378,8 @@ void loop()
 			prevY = posY;
 			scaleX = horizontalScale;
 			posX++;
+			ucg.setColor(0,0,0);
+			ucg.drawVLine(posX, 0, height);
 		}
 
 		if (posX > width)
@@ -382,13 +393,12 @@ void loop()
 			correction_start = correction_end;
 			correction_count = 0;
 
-			sprintf(buf, "%d s/s %d bpm %s Y:%d V:%d B:%.2f ",
+			sprintf(buf, "%d s/s %d bpm %s ",
 					(int)round(quant_Fq),
 					beatDetector->getBps(),
-					(dataRecorder->hasSD() ? "SD" : "--"),
-					posY, rawValue, beatDetector->getBaseline());
+					(dataRecorder->hasSD() ? "SD" : "--"));
 
-			displayStatus(buf, false);
+			displayStatus(buf);
 		  }
 		}
 

@@ -31,50 +31,59 @@ bool DataRecorder::hasSD()
 	return sdReady;
 }
 
+bool DataRecorder::isActive()
+{
+	return sdOpenedWriting;
+}
+
 void DataRecorder::push(double value)
 {
-	m_Data[m_SamplePointer] = value;
-	m_SamplePointer = (m_SamplePointer + 1) % m_SamplingFreq;
-
-	if (m_SamplePointer == 0)
+	if (sdReady)
 	{
-		// flushing full row of samples
-		if (sdReady)
+		if (!sdOpenedWriting)
 		{
-			if (!sdOpenedWriting)
-			{
-				recordingFile = SD.open(getNewFileName(), FILE_WRITE);
-				sdOpenedWriting = true;
-			}
+			prepareCurrentFolder();
+			getNewFileName();
+			recordingFile = SD.open(buf, O_CREAT | O_WRITE);
+			sdOpenedWriting = true;
+			m_SampleCount = 0;
+		}
 
+//		sprintf(buf, "%ld,%lu,", round(value*1000), millis());
+		sprintf(buf, "%ld,", round(value*1000));
+		recordingFile.print(buf);
+
+		m_SampleCount = (m_SampleCount + 1) % m_SamplingFreq;
+
+		if (m_SampleCount == 0)
+		{
 			DateTime now = m_Rtc->now();
-			sprintf(buf, "%04d-%02d-%02d %02d:%02d:%02d",
+			sprintf(buf, "%04d-%02d-%02d %02d:%02d:%02d,%lu",
 					now.year(),
 					now.month(),
 					now.day(),
 					now.hour(),
 					now.minute(),
-					now.second());
+					now.second(),
+					micros());
 
-			recordingFile.print(buf);
-
-			for (int i = 0; i < m_SamplingFreq; i++)
-			{
-				recordingFile.print(",");
-				recordingFile.print(m_Data[i], 3);
-				m_Data[i] = 0;
-			}
-
-			recordingFile.println();
+			recordingFile.println(buf);
+			recordingFile.flush();
 		}
 	}
+}
+
+void DataRecorder::prepareCurrentFolder()
+{
+	DateTime now = m_Rtc->now();
+	sprintf(currentFolder, "/ECG/%04d%02d%02d", now.year(), now.month(), now.day());
+	SD.mkdir(currentFolder);
 }
 
 char * DataRecorder::getNewFileName()
 {
 	DateTime now = m_Rtc->now();
-	// todo maybe make hierarchy e.g. /ECG/{DATE}/{TIME}.csv
-	sprintf(buf, "/ECG/%04d%02d%02d.csv", now.year(), now.month(), now.day());
+	sprintf(buf, "%s/%02d%02d%02d.csv", currentFolder, now.hour(), now.minute(), now.second());
 	return buf;
 }
 

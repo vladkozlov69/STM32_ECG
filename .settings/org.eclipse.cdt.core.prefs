@@ -269,6 +269,15 @@ environment/project/io.sloeber.core.toolChain.release.1495694625/A.RECIPE.SIZE.R
 environment/project/io.sloeber.core.toolChain.release.1495694625/A.RECIPE.SIZE.REGEX/delimiter=\:
 environment/project/io.sloeber.core.toolChain.release.1495694625/A.RECIPE.SIZE.REGEX/operation=replace
 environment/project/io.sloeber.core.toolChain.release.1495694625/A.RECIPE.SIZE.REGEX/value=^(?\:\\.text|\\.data|\\.rodata|\\.text.align|\\.ARM.exidx)\\s+([0-9]+).*
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.CORE.PATH/delimiter=\:
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.CORE.PATH/operation=replace
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.CORE.PATH/value=${eclipse_home}/arduinoPlugin/packages/stm32duino/hardware/STM32F1/2018.9.24
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.UPLOAD.PATH/delimiter=\:
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.UPLOAD.PATH/operation=replace
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.UPLOAD.PATH/value=${eclipse_home}/arduinoPlugin/packages/stm32duino/hardware/STM32F1/2018.9.24
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.VARIANT.PATH/delimiter=\:
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.VARIANT.PATH/operation=replace
+environment/project/io.sloeber.core.toolChain.release.1495694625/A.REFERENCED.VARIANT.PATH/value=${eclipse_home}/arduinoPlugin/packages/stm32duino/hardware/STM32F1/2018.9.24
 environment/project/io.sloeber.core.toolChain.release.1495694625/A.RUNTIME.HARDWARE.PATH/delimiter=\:
 environment/project/io.sloeber.core.toolChain.release.1495694625/A.RUNTIME.HARDWARE.PATH/operation=replace
 environment/project/io.sloeber.core.toolChain.release.1495694625/A.RUNTIME.HARDWARE.PATH/value=${eclipse_home}/arduinoPlugin/packages/stm32duino/hardware/STM32F1
@@ -622,7 +631,7 @@ environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.COM_PORT
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.COM_PORT/value=cu.SLAB_USBtoUART
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.ECLIPSE_LOCATION/delimiter=\:
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.ECLIPSE_LOCATION/operation=replace
-environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.ECLIPSE_LOCATION/value=${eclipse_home}//////////////////////////////////////////////////////////////
+environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.ECLIPSE_LOCATION/value=${eclipse_home}////////////////////////////////////////////////////////////////////////
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.ALL/delimiter=\:
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.ALL/operation=replace
 environment/project/io.sloeber.core.toolChain.release.1495694625/JANTJE.EXTRA.ALL/value=

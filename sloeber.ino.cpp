@@ -2,7 +2,7 @@
 //This is a automatic generated file
 //Please do not modify this file
 //If you touch this file your change will be overwritten during the next build
-//This file has been generated on 2018-12-04 14:55:15
+//This file has been generated on 2018-12-18 13:32:29
 
 #include "Arduino.h"
 #include "Arduino.h"
@@ -23,8 +23,10 @@ void readADC(void) ;
 void timerEncIsr() ;
 result doSave() ;
 result doUpdateRtc() ;
+void setClipGraph() ;
+void setClipStatus() ;
 void setup() ;
-void displayStatus(const char * status, bool clear) ;
+void displayStatus(const char * status) ;
 void loop() ;
 
 
