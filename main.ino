@@ -155,7 +155,7 @@ altMENU(menu,time,"Time",doUpdateRtc,exitEvent,noStyle,(systemStyles)(_asPad|Men
 		,FIELD(m_Day,"","-",1,31,1,0,doNothing,noEvent,noStyle)
 		,FIELD(m_Month,"","-",1,12,1,0,doNothing,noEvent,noStyle)
 		,FIELD(m_Year,""," ",2010,2025,1,0,doNothing,noEvent,noStyle)
-		,FIELD(m_Hour,"",":",0,11,1,0,doNothing,noEvent,noStyle)
+		,FIELD(m_Hour,"",":",0,23,1,0,doNothing,noEvent,noStyle)
 		,FIELD(m_Minute,"","",0,59,1,0,doNothing,noEvent,wrapStyle)
 );
 
