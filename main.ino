@@ -326,6 +326,8 @@ void loop()
 
 		displayStatus(buf);
 
+		ucg.setClipRange(0, 0, width, height);
+
 		return;
 	}
 
