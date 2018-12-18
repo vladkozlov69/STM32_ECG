@@ -108,8 +108,8 @@ void readADC(void)
 
 //================ MENU DEFINITION ==================
 #define ENC_A PB12
-#define ENC_B PB13
-#define ENC_BTN PB14
+#define ENC_B PB14
+#define ENC_BTN PB13
 
 ClickEncoder encoder(ENC_A, ENC_B, ENC_BTN, 2);
 ClickEncoderStream encStream(encoder,1);
