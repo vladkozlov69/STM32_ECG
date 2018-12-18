@@ -227,7 +227,7 @@ void setup()
 	pinMode(ECG_LO1, INPUT);
 	pinMode(ECG_LO2, INPUT);
 
-	pinMode(ENC_BTN, INPUT_PULLUP);
+	//pinMode(ENC_BTN, INPUT_PULLUP);
 
 	pinMode(PC13, OUTPUT);
 
