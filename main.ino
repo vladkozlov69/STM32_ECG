@@ -92,6 +92,8 @@ unsigned int disconnectTimeout = 10;
 #define ECG_LO1 PB10
 #define ECG_LO2 PB11
 
+#define BATTERY_VOLTAGE_PIN PB0
+
 bool hasSD = false;
 
 void readADC(void)
@@ -281,7 +283,12 @@ void displayStatus(const char * status)
 	setClipStatus();
 
 	ucg.setColor(255, 255, 255);
-	ucg.setPrintPos(0,20);
+
+	ucg.setPrintPos(0, 20);
+
+	ucg.print(5.0 * analogRead(BATTERY_VOLTAGE_PIN) / 2048, 2);
+
+	ucg.setPrintPos(40, 20);
 	ucg.print(status);
 }
 
