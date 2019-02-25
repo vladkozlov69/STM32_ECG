@@ -252,7 +252,6 @@ void setup()
 	ucg.setColor(1, 0, 0, 127);
 	ucg.setColor(0, 0, 127);
 	ucg.drawBox(0, 0, width, STATUS_LINE_HEIGHT);
-	ucg.setFontMode(UCG_FONT_MODE_SOLID);
 	ucg.setFont(ucg_font_ncenR12_hr);
 
 	setClipGraph();
@@ -286,7 +285,7 @@ void displayStatus(const char * status)
 
 	ucg.setPrintPos(0, 20);
 
-	ucg.print(5.0 * analogRead(BATTERY_VOLTAGE_PIN) / 2048, 2);
+	ucg.print(3.3 * analogRead(BATTERY_VOLTAGE_PIN) / 2048, 2);
 
 	ucg.setPrintPos(40, 20);
 	ucg.print(status);
